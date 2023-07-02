@@ -1,23 +1,29 @@
 #!/usr/bin/python3
-import sys
+from sys import argv
+from math import sqrt
 
 
-def factorize(n):
+def factor(n):
     """
-    Function to factorize a number into pairs of factors.
-
+    Generator function to yield factors of a given number.
     Args:
-        n (int): Number to be factorized.
+       n (int): Number to be factorized.
 
-    Returns:
-        list: List of factor pairs.
+    Yeilds:
+       int: Factors of the given number.
 
     """
-    factors = []
-    for i in range(2, n // 2 + 1):
-        if n % i == 0:
-            factors.append((i, n // i))
-    return factors
+    if n % 2 == 0:
+        yield 2
+        while n % 2 == 0:
+            n //= 2
+        for i in range(3, int(sqrt(n)) + 1, 2):
+            if n % i == 0:
+                yield i
+                while n % i == 0:
+                    n //= i
+        if n > 2:
+            yield n
 
 
 def main(filename):
@@ -26,20 +32,18 @@ def main(filename):
 
     Args:
         filename (str): Name of the file containing numbers to factorize.
-
     """
-    with open(filename, 'r') as file:
+    with open(filename) as file:
         for line in file:
-            n = int(line.strip())
-            factorizations = factorize(n)
-            for factorization in factorizations:
-                p, q = factorization
-                print(f"{n}={p}*{q}")
+            n = int(line)
+            factors = list(factor(n))
+            factors_str = '*'.join(map(str, factors))
+            print("{:d}={}".format(n, factors_str))
 
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        print("Usage: python factors.py <file>")
+    if len(argv) != 2:
+        print("Usage: python factors <file>")
         sys.exit(1)
-    filename = sys.argv[1]
+    filename = argv[1]
     main(filename)
