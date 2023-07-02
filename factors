@@ -1,49 +1,19 @@
 #!/usr/bin/python3
-from sys import argv
-from math import sqrt
-
+import sys
 
 def factor(n):
-    """
-    Generator function to yield factors of a given number.
-    Args:
-       n (int): Number to be factorized.
+    for i in range(2, n):
+        if n % i == 0:
+            return n // i, i
+        return n, 1
 
-    Yeilds:
-       int: Factors of the given number.
-
-    """
-    if n % 2 == 0:
-        yield 2
-        while n % 2 == 0:
-            n //= 2
-        for i in range(3, int(sqrt(n)) + 1, 2):
-            if n % i == 0:
-                yield i
-                while n % i == 0:
-                    n //= i
-        if n > 2:
-            yield n
+def main():
+    with open(sys.argv[1]) as f:
+            for line in f:
+                n = int(line)
+                p, q = factor(n)
+                print(f"{n}={p}*{q}")
 
 
-def main(filename):
-    """
-    Main function to read numbers from a file and display their factorizations.
-
-    Args:
-        filename (str): Name of the file containing numbers to factorize.
-    """
-    with open(filename) as file:
-        for line in file:
-            n = int(line)
-            factors = list(factor(n))
-            factors_str = '*'.join(map(str, factors))
-            print("{:d}={}".format(n, factors_str))
-
-
-if __name__ == '__main__':
-    if len(argv) != 2:
-        print("Usage: python factors <file>")
-        sys.exit(1)
-    filename = argv[1]
-    main(filename)
+if __name__ == "__main__":
+    main()
