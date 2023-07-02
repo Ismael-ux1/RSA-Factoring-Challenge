@@ -1,0 +1,45 @@
+#!/usr/bin/python3
+import sys
+
+
+def factorize(n):
+    """
+    Function to factorize a number into pairs of factors.
+
+    Args:
+        n (int): Number to be factorized.
+
+    Returns:
+        list: List of factor pairs.
+
+    """
+    factors = []
+    for i in range(2, n // 2 + 1):
+        if n % i == 0:
+            factors.append((i, n // i))
+    return factors
+
+
+def main(filename):
+    """
+    Main function to read numbers from a file and display their factorizations.
+
+    Args:
+        filename (str): Name of the file containing numbers to factorize.
+
+    """
+    with open(filename, 'r') as file:
+        for line in file:
+            n = int(line.strip())
+            factorizations = factorize(n)
+            for factorization in factorizations:
+                p, q = factorization
+                print(f"{n}={p}*{q}")
+
+
+if __name__ == '__main__':
+    if len(sys.argv) != 2:
+        print("Usage: python factors.py <file>")
+        sys.exit(1)
+    filename = sys.argv[1]
+    main(filename)
