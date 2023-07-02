@@ -1,18 +1,20 @@
 #!/usr/bin/python3
 import sys
 
+
 def factor(n):
     for i in range(2, n):
         if n % i == 0:
             return n // i, i
         return n, 1
 
+
 def main():
     with open(sys.argv[1]) as f:
-            for line in f:
-                n = int(line)
-                p, q = factor(n)
-                print(f"{n}={p}*{q}")
+        for line in f:
+            n = int(line)
+            p, q = factor(n)
+            print(f"{n}={p}*{q}")
 
 
 if __name__ == "__main__":
