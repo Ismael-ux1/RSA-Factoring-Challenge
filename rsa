@@ -1,0 +1,40 @@
+#!/usr/bin/python3
+import sys
+import math
+
+
+def find_prime_factors(n):
+    factors = []
+    # Check divisibility by 2
+    while n % 2 == 0:
+        factors.append(2)
+        n //= 2
+
+    # Check divisibility by odd numbers
+    for i in range(3, int(math.sqrt(n)) + 1, 2):
+        while n % i == 0:
+            factors.append(i)
+            n //= i
+
+    # If n is still greater than 2, it is a prime factor itself
+    if n > 2:
+        factors.append(n)
+
+    return factors
+
+
+def main():
+    filename = sys.argv[1]
+    with open(filename) as f:
+        for line in f:
+            n = int(line.strip())
+            factors = find_prime_factors(n)
+            if len(factors) > 0:
+                p, q = factors
+                print(f"{n}={p}*{q}")
+            else:
+                print(f"No prime factorization found for {n}")
+
+
+if __name__ == "__main__":
+    main()
